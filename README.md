@@ -32,6 +32,16 @@ All generated files are saved to `Pathways/`:
 
 Light microscopy images (MCFO confocal, aligned to unisex standard brain) are in `LightMicroscopy/MCFO_Screen/15D08/`.
 
+## Network
+
+Neurons with >= 100 synapses from the LC17 population:
+
+![partners](Pathways/LC17_Outputs-weight-100.png)
+
+Multi-hop pathways from LC17 partners to selected DNs:
+
+![network](Pathways/Gios_Pathways.png)
+
 ## Dependencies
 
 - [`neuprint-python`](https://github.com/connectome-neuprint/neuprint-python) — NeuPrint API client
