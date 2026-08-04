@@ -2,6 +2,8 @@
 
 Connectomic analysis of LC17 neurons and their multi-hop pathways to Descending Neurons (DNs) in the *Drosophila melanogaster* hemibrain connectome.
 
+Current preprint version: [Frighetto-2026](https://www.biorxiv.org/content/10.1101/2025.10.14.682373v2)
+
 ## Analysis Pipeline
 
 All analysis lives in `LC17-to-DN_Pathways.ipynb` and runs in sequence:
