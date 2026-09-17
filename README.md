@@ -1,53 +1,67 @@
 # LC17 Connectomics
 
-Connectomic analysis of LC17 neurons and their multi-hop pathways to Descending Neurons (DNs) in the *Drosophila melanogaster* hemibrain connectome.
+Connectomic analysis of LC17 neurons and their multi-hop pathways to descending neurons (DNs) in the *Drosophila melanogaster* hemibrain and male CNS connectomes.
 
-Current preprint version: [Frighetto-2026](https://www.biorxiv.org/content/10.1101/2025.10.14.682373v2)
+**Preprint:** [Frighetto et al., 2026](https://www.biorxiv.org/content/10.1101/2025.10.14.682373v2)
 
-## Analysis Pipeline
-
-All analysis lives in `LC17-to-DN_Pathways.ipynb` and runs in sequence:
-
-1. **Output connectivity** — Fetch all downstream synaptic partners of LC17 neurons from NeuPrint; aggregate weights across the LC17 population.
-2. **High-confidence partners** — Filter to neurons receiving >100 total synapses from LC17; remove LC17→LC17 self-connections.
-3. **Multi-hop pathway discovery** — Use `fetch_shortest_paths` (min weight: 10 synapses, max hops: 3) across all LC17-partner→DN neuron pairs.
-4. **Pathway cleaning** — Remove paths traversing LC17 neurons, paths with missing intermediate neurons, and DN subtypes outside a curated subset (DNa01–04, DNa10, DNb01, DNp07, DNp09).
-5. **Network construction** — Aggregate cleaned paths into a pairwise type-level connectivity matrix.
-6. **Visualization** — Hierarchical clustering heatmap (Ward's method) and a layered network diagram.
-
-## Outputs
-
-All generated files are saved to `Pathways/`:
-
-| File | Description |
+| Folder | Contents |
 |---|---|
-| `LC17_all-outputs.{csv,parquet}` | All LC17 downstream connections (15,334 rows, 776 targets) |
-| `LC17_selected-outputs-grouped.{csv,parquet}` | High-weight partners only (33 targets, weight > 100) |
-| `all_paths.{csv,parquet}` | Multi-hop pathways with per-step neuron type and weight |
-| `pairwise_network.{csv,parquet}` | Type-level connectivity matrix across all pathway neurons |
-| `pairwise_network_woDN-prop.parquet` | Same, excluding DN→DN propagation |
-| `LC17_Output-Weights.pdf` | Synaptic weight ECDF |
-| `LC17_Outputs-weight-100.pdf` | High-weight connection heatmap |
-| `LC17_Pathways-Cleaning.pdf` | Pathway count distributions across filtering stages |
-| `LC17_Network-Heatmap.pdf` | Clustered connectivity heatmap |
-| `Gios_Pathways.pdf` | Layered network diagram (LC17 partners → interneurons → DNs) |
+| [`Scripts/`](Scripts/README.md) | Data fetching from neuPrint, and the order of the analysis pipeline |
+| [`Notebooks/`](Notebooks/README.md) | Analysis and figures, with a description of every output |
+| `Data/` | Fetched connectivity and pathways |
+| `Figures/` | Generated figures |
+| `LightMicroscopy/` | MCFO confocal images (aligned to the unisex standard brain) in `MCFO_Screen/15D08/` |
 
-Light microscopy images (MCFO confocal, aligned to unisex standard brain) are in `LightMicroscopy/MCFO_Screen/15D08/`.
+---
 
-## Network
+## LC17 Partners
 
-Neurons with >= 100 synapses from the LC17 population:
+The first-order partners of LC17 were identified independently in each dataset. The following neurons receive more than 100 synapses from the LC17 population.
 
-![partners](Pathways/LC17_Outputs-weight-100.png)
+**Hemibrain**
 
-Multi-hop pathways from LC17 partners to selected DNs:
+![Hemibrain LC17 partners](Figures/Partners/hemibrain_LC17_Output-Heatmap-100.png)
 
-![network](Pathways/Gios_Pathways.png)
+**Male CNS**
 
-## Dependencies
+![Male CNS LC17 partners](Figures/Partners/malecns_LC17_Output-Heatmap-100.png)
 
-- [`neuprint-python`](https://github.com/connectome-neuprint/neuprint-python) — NeuPrint API client
-- `pandas`, `numpy`, `scipy`, `networkx`
-- `matplotlib`, `seaborn`
+The two datasets do not contain an identical set of partners. The partner types shared between them were therefore identified, and their weights and ranks compared.
 
-A NeuPrint API token is required and should be set as the `HEMIBRAIN_TOKEN` environment variable (or passed to `connectome_analysis`). Tokens are available from [neuprint.janelia.org](https://neuprint.janelia.org) after logging in.
+![Weight and rank comparison of the shared partners](Figures/Partners/LC17_Weight-Rank-Comparison-Output-100.png)
+
+The ranking of the shared partners is consistent across datasets and across hemispheres.
+
+The notable exception is **PPM1203**, which receives only weak input from LC17 in both the hemibrain and the male CNS. Each LC17 neuron makes only a few synapses (approximately 1–4) onto PPM1203. Summed across the population, however, the connection exceeds the 100-synapse threshold. The functional significance of such diffuse connectivity, if any, remains unknown. PPM1203 and other neuron types with similarly diffuse connectivity are retained in the initial heatmaps.
+
+A subset of the partners also makes **Reciprocal Connections** back onto LC17, in both datasets.
+
+![Output against recurrent input for the shared partners](Figures/Partners/LC17_Output-vs-Input-100-right-label.png)
+
+---
+
+## Pathways to Descending Neurons
+
+The shared partner types were used to map the multi-hop pathways from LC17's first-order partners to the DNs. The hemibrain served as the starting point, and the search was then repeated in the male CNS.
+
+Within the hemibrain pathway network, the DNs were ranked by how much of the partners' output reaches them within 3 hops (the flow ranking).
+
+The same analysis in the male CNS, carried out separately for the partners in each hemisphere, recovers largely the same pattern. It additionally reveals flow onto DNs that do not appear among the hemibrain DN targets, such as DNp103 and several DNpe types.
+
+![Flow ranking of the DNs in the hemibrain](Figures/Pathways/hemibrain/hemibrain_LC17_DN-Ranking.png)
+![Flow onto the DNs in the male CNS](Figures/Pathways/malecns/malecns_LC17_DN-Flow.png)
+
+Two DN selections were used to construct the pathway networks:
+
+- a manual selection (highlighting some of the steering DNs)
+- the top 10 DNs from the flow ranking
+
+The male CNS pathway search was restricted to the union of these two selections.
+
+**Manual selection**
+
+![Pathways to the manually selected DNs](Figures/Pathways/hemibrain/hemibrain_LC17_Pathways-GioFilter.png)
+
+**Male CNS**
+
+![Pathways to the manually selected DNs in the male CNS](Figures/Pathways/malecns/malecns_LC17_Pathways-GioFilter-R.png)
