@@ -51,17 +51,29 @@ The same analysis in the male CNS, carried out separately for the partners in ea
 ![Flow ranking of the DNs in the hemibrain](Figures/Pathways/hemibrain/hemibrain_LC17_DN-Ranking.png)
 ![Flow onto the DNs in the male CNS](Figures/Pathways/malecns/malecns_LC17_DN-Flow.png)
 
-Two DN selections were used to construct the pathway networks:
+Three DN selections were used to construct the pathway networks:
 
-- a manual selection (highlighting some of the steering DNs)
-- the top 10 DNs from the flow ranking
+- Manual selection (highlighting some of the steering DNs; Gio's Filter)
+- Manual selection (highlighting some of the steering DNs; Prat's Filter)
+- Top 10 DNs from the flow ranking
 
 The male CNS pathway search was restricted to the union of these two selections.
 
-**Manual selection**
+### Gio's Filter
 
-![Pathways to the manually selected DNs](Figures/Pathways/hemibrain/hemibrain_LC17_Pathways-GioFilter.png)
+![Pathways to the gio selected DNs](Figures/Pathways/hemibrain/hemibrain_LC17_Pathways-GioFilter.png)
 
-**Male CNS**
+### Prat's Filter
+
+![Pathways to the prat selected DNs](Figures/Pathways/hemibrain/hemibrain_LC17_Pathways-PratFilter.png)
+
+Although not clearly seen in the network panels above, there is dense recurrent connectivity among the first order LC17 partners, as well as among the inter-neurons that form the network that ultimately targets the DNs. Recurrently connected pairs (with weight > 10 in both directions are highlighted in blue).
+
+![Pathways to the prat selected DNs](Figures/Pathways/hemibrain/hemibrain_LC17_Pathways-PratFilter-Recurrence.png)
+
+
+### Male CNS Gio's Filter
+
+We can recover a similar network in the Male CNS. Since we restrict our search only to our selected DNs, we do not recover all possible paths to all DNs. However, some DN $\rightarrow$ DN connections are recovered (most notably **DNa03** in the hemibrain). They form more dense intermediate pathways and help recover additional inter-neuron players in this network. We include all these connections in the visualization for the Male CNS. 
 
 ![Pathways to the manually selected DNs in the male CNS](Figures/Pathways/malecns/malecns_LC17_Pathways-GioFilter-R.png)
