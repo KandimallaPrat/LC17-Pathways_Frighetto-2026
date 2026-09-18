@@ -34,9 +34,25 @@ The ranking of the shared partners is consistent across datasets and across hemi
 
 The notable exception is **PPM1203**, which receives only weak input from LC17 in both the hemibrain and the male CNS. Each LC17 neuron makes only a few synapses (approximately 1–4) onto PPM1203. Summed across the population, however, the connection exceeds the 100-synapse threshold. The functional significance of such diffuse connectivity, if any, remains unknown. PPM1203 and other neuron types with similarly diffuse connectivity are retained in the initial heatmaps.
 
+### Reciprocal Connections
+
 A subset of the partners also makes **Reciprocal Connections** back onto LC17, in both datasets.
 
 ![Output against recurrent input for the shared partners](Figures/Partners/LC17_Output-vs-Input-100-right-label.png)
+
+In the Male CNS, we also compare the spread of the reciprocal connections across all partners of LC17 (weight > 10) as well as those of LPLC2.
+
+![Reciprocal LPLC](Figures/Direct/malecns/malecns_LC17-LPLC2_Output-vs-Input.png)
+
+---
+
+## Direct Outputs to Descending Neurons
+
+In the hemibrain, no (distinct/consistent) output to the descending neurons can be found. Just to confirm, we searched in the Male CNS (in addition to the matched searches described above) to determine if there were direct outputs to DNs. We compared this to **LPLC2**.
+
+![Direct DNs](Figures/Direct/malecns/malecns_LC17-LPLC2_DN-Direct.png)
+
+LPLC2 is directly and strongly connected to multiple DN types. LC17 connections, however, appear restricted to DNp35 (carrying PVLP136 annotation - likley to attribute to a hemibrain type which cannot be ascertained as a descending neuron due to the partial nature of the volume). It is interesting to note that there is a strong discrepancy between the left and right LC17s in contacting the corresponding DNp35, which we suspect is due to reconstruction incompleteness (might need some proof-reading). 
 
 ---
 

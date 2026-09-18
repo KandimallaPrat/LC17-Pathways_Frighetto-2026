@@ -7,6 +7,7 @@ Analysis and visualization of the data fetched by the [scripts](../Scripts/READM
 | [`LC17_partner-check.ipynb`](#lc17_partner-checkipynb) | Compares the LC17 partners across the hemibrain and the male CNS |
 | [`LC17_hemibrain-DN-pathways.ipynb`](#lc17_hemibrain-dn-pathwaysipynb) | Cleans, ranks, and draws the hemibrain pathways from the LC17 partners to the DNs |
 | [`LC17_malecns-DN-pathways.ipynb`](#lc17_malecns-dn-pathwaysipynb) | Repeats the pathway analysis in the male CNS, separately for each hemisphere |
+| [`LC17-LPLC2_malecns-outputs.ipynb`](#lc17-lplc2_malecns-outputsipynb) | Compares the direct DN outputs and the reciprocal partners of LC17 and LPLC2 in the male CNS |
 
 ---
 
@@ -64,14 +65,19 @@ Cleans the hemibrain pathways, ranks the DNs by how much of the partners' output
    - At every hop, each neuron distributes what it received among its targets in proportion to its output synapses.
    - Connections out of the DNs are removed, so whatever reaches a DN stays there.
    - The **score** is the percentage of the partners' output that reaches each DN within 3 hops.
-6. **Filtering the DNs** — Two DN selections are used to draw the networks:
+6. **Filtering the DNs** — Three DN selections are used to draw the networks:
    - `auto_filter` — The top 10 DNs from the flow ranking.
    - `gio_filter` — A manual selection.
+   - `prat_filter` — A second manual selection (the Gio's selection with DNp06 added).
 
    Only pathways ending on a selected DN are kept.
 7. **Network** — Type-level network diagrams for each selection.
    - **X axis:** three layers (LC17 partners, intermediate neurons, DNs). The intermediate neurons are spread along the X axis by a spring layout.
    - **Y axis:** clustering of the connectivity (Ward's method).
+8. **Recurrent map** — A heatmap of all connections among the neurons in the Prat's filter network, taken directly from the all-to-all connectivity, grouped by type.
+   - None of the network diagram rules are applied, so connections between partners, back onto partners, out of DNs, and within a type (the diagonal) are all shown.
+   - Rows and columns are split into LC17 partners, intermediate neurons, and DNs, each sorted alphabetically.
+   - Pairs connected in both directions (more than 10 synapses each way) are outlined.
 
 ### Outputs
 
@@ -89,7 +95,9 @@ Cleans the hemibrain pathways, ranks the DNs by how much of the partners' output
 | `hemibrain_LC17_Partner-Inter-Connectivity` | Heatmap of the connectivity between the partner types |
 | `hemibrain_LC17_DN-Ranking` | Flow ranking of the DNs, broken down by hop |
 | `hemibrain_LC17_Pathways-AutoFilter` | Network diagram for the top 10 DNs from the flow ranking |
-| `hemibrain_LC17_Pathways-GioFilter` | Network diagram for the manually selected DNs |
+| `hemibrain_LC17_Pathways-GioFilter` | Network diagram for the Gio's selection |
+| `hemibrain_LC17_Pathways-PratFilter` | Network diagram for the Prat's selection |
+| `hemibrain_LC17_Pathways-PratFilter-Recurrence` | Recurrent map of the Prat's filter network |
 
 ---
 
@@ -137,3 +145,44 @@ Repeats the hemibrain analysis in the male CNS. The male CNS contains both hemis
 | `malecns_LC17_DN-Flow` | Flow onto each DN from the right and from the left partners, broken down by hop. A star marks a DN side absent from the network. |
 | `malecns_LC17_Pathways-AutoFilter-R` | Network diagram for the hemibrain top 10 DNs, from the right partners |
 | `malecns_LC17_Pathways-GioFilter-R` | Network diagram for the manually selected DNs, from the right partners |
+
+---
+
+## `LC17-LPLC2_malecns-outputs.ipynb`
+
+Compares LC17 with LPLC2 in the male CNS: their direct connections onto the DNs, and how reciprocal their downstream partners are. All connections are fetched with no minimum weight, to give a broad survey.
+
+**Inputs** — neuPrint (male CNS)
+
+### Analysis
+
+1. **Direct outputs to DNs** — Connections from LC17 and LPLC2 onto every neuron type beginning with `DN`, summed per population side (`LC17_L`, `LC17_R`, `LPLC2_L`, `LPLC2_R`).
+   - DN columns are sorted alphabetically, with both sides of each type side by side.
+   - A DN side that receives no connections from any of the four populations is marked with a star.
+2. **Outputs and recurrence** — All outputs of LC17 and LPLC2, excluding connections onto LC17 and LPLC2 themselves, grouped by population side and partner instance.
+   - Only partners receiving more than 10 synapses from a population side are kept.
+   - The inputs from these partners back onto LC17 and LPLC2 are then fetched.
+3. **Recurrent vs feedforward partners** — Output weight against recurrent input weight for every partner, with LC17 and LPLC2 in separate panels and the right and left populations in red and blue. Partners that send nothing back are drawn hollow.
+
+### Outputs
+
+**Data** (`Data/Direct/malecns/`)
+
+| File | Description |
+|---|---|
+| `LC17-LPLC2_DN-direct.parquet` | Neuron-to-neuron connections from LC17 and LPLC2 onto the DNs |
+| `LC17-LPLC2_Outputs.parquet` | All outputs of LC17 and LPLC2 |
+| `LC17-LPLC2_Recurrence.parquet` | Inputs from the downstream partners back onto LC17 and LPLC2 |
+
+**Figures** (`Figures/Direct/malecns/`, saved as `.pdf` and `.png`)
+
+| File | Description |
+|---|---|
+| `malecns_LC17-LPLC2_DN-Direct` | Heatmap of the direct connections from each population side onto the DNs |
+| `malecns_LC17-LPLC2_Output-vs-Input` | Output against recurrent input for the partners of LC17 and LPLC2 |
+
+### Notes
+
+- LC17 connects directly only to DNp35 (annotated as PVLP136), whereas LPLC2 connects strongly to many DN types.
+- LC17_R makes far more synapses onto DNp35 than LC17_L does (780 vs 101), which may reflect incomplete reconstruction.
+- Partners receiving only a few synapses but sending many back (such as T2a, T3 and Li25) are mainly upstream inputs of LC17 and LPLC2, rather than strong reciprocal partners.

@@ -20,6 +20,7 @@ The scripts and notebooks run in the following order. Each step reads the output
 | 4 | `Notebooks/LC17_hemibrain-DN-pathways.ipynb` | `Data/Pathways/hemibrain/` | DN selections (`auto_filter`, `gio_filter`) |
 | 5 | `Scripts/fetch_pathways_malecns.py` | Shared partner table, DN selections, neuPrint | `Data/Pathways/malecns/` |
 | 6 | `Notebooks/LC17_malecns-DN-pathways.ipynb` | `Data/Pathways/malecns/` | Male CNS flow and network figures |
+| 7 | `Notebooks/LC17-LPLC2_malecns-outputs.ipynb` | neuPrint | `Data/Direct/malecns/` |
 
 ---
 
