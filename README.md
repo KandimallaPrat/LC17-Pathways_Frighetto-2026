@@ -1,6 +1,6 @@
-# LC17 Connectomics
+# LC17 Connectome Analysis
 
-Connectomic analysis of LC17 neurons and their multi-hop pathways to descending neurons (DNs) in the *Drosophila melanogaster* hemibrain and male CNS connectomes.
+Connectivity analysis of LC17 neurons and their multi-hop pathways to descending neurons (DNs) in the *Drosophila melanogaster* [hemibrain:v1.2.1](https://www.janelia.org/project-team/flyem/hemibrain) and [male-cns:v1.0](https://www.janelia.org/project-team/flyem/male-cns-connectome) connectomes.
 
 **Preprint:** [Frighetto et al., 2026](https://www.biorxiv.org/content/10.1101/2025.10.14.682373v2)
 
@@ -64,8 +64,12 @@ Within the hemibrain pathway network, the DNs were ranked by how much of the par
 
 The same analysis in the male CNS, carried out separately for the partners in each hemisphere, recovers largely the same pattern. It additionally reveals flow onto DNs that do not appear among the hemibrain DN targets, such as DNp103 and several DNpe types.
 
-![Flow ranking of the DNs in the hemibrain](Figures/Pathways/hemibrain/hemibrain_LC17_DN-Ranking.png)
-![Flow onto the DNs in the male CNS](Figures/Pathways/malecns/malecns_LC17_DN-Flow.png)
+<table>
+  <tr>
+    <td><img src="Figures/Pathways/hemibrain/hemibrain_LC17_DN-Ranking.png" height="600" alt="Flow ranking of the DNs in the hemibrain"></td>
+    <td><img src="Figures/Pathways/malecns/malecns_LC17_DN-Flow.png" height="600" alt="Flow onto the DNs in the male CNS"></td>
+  </tr>
+</table>
 
 Three DN selections were used to construct the pathway networks:
 
