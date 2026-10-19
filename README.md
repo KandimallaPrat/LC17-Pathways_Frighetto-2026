@@ -2,7 +2,7 @@
 
 Connectivity analysis of LC17 neurons and their multi-hop pathways to descending neurons (DNs) in the *Drosophila melanogaster* [hemibrain:v1.2.1](https://www.janelia.org/project-team/flyem/hemibrain) and [male-cns:v1.0](https://www.janelia.org/project-team/flyem/male-cns-connectome) connectomes.
 
-**Preprint:** [Frighetto et al., 2026](https://www.biorxiv.org/content/10.1101/2025.10.14.682373v2)
+**Publication:** [Frighetto et al., 2026](https://www.sciencedirect.com/science/article/pii/S0960982226012704#article)
 
 | Folder | Contents |
 |---|---|
